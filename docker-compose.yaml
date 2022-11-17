@@ -1,0 +1,29 @@
+version: "3.7"
+services:
+    rabbitmq:
+        build:
+            context: ./
+            dockerfile: dockerfile
+        container_name: rabbitmq
+        restart: always
+        ports:
+            - 9890:15672
+            - 8888:5672
+        hostname: stats
+        volumes:
+            - ./data:/var/lib/rabbitmq/
+        environment:
+            RABBITMQ_DEFAULT_USER: victory
+            RABBITMQ_DEFAULT_PASS: 123456
+            RABBITMQ_VM_MEMORY_HIGH_WATERMARK: 0.5
+        networks:
+            rabbitmq_net:
+                aliases:
+                    - rabbitmq_host
+
+volumes:
+ data: {}
+networks:
+  rabbitmq_net:
+    name: rabbitmq_network
+    driver: bridge
